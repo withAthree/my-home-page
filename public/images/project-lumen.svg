@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="Lumen 摄影后期助手封面">
+  <defs>
+    <linearGradient id="lm-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#08060f"/>
+      <stop offset="0.5" stop-color="#140c24"/>
+      <stop offset="1" stop-color="#050308"/>
+    </linearGradient>
+    <radialGradient id="lm-sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffd166" stop-opacity="0.95"/>
+      <stop offset="0.45" stop-color="#ff9f43" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#ff9f43" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="lm-blade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.14"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.03"/>
+    </linearGradient>
+    <filter id="lm-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="24"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="750" fill="url(#lm-bg)"/>
+
+  <!-- 色轮 -->
+  <g opacity="0.9">
+    <circle cx="300" cy="360" r="120" fill="#f72585" fill-opacity="0.5" filter="url(#lm-glow)"/>
+    <circle cx="420" cy="300" r="110" fill="#4cc9f0" fill-opacity="0.45" filter="url(#lm-glow)"/>
+    <circle cx="390" cy="430" r="100" fill="#ffd166" fill-opacity="0.4" filter="url(#lm-glow)"/>
+  </g>
+
+  <!-- 光圈叶片 -->
+  <g transform="translate(760 375)">
+    <circle r="220" fill="none" stroke="#ffffff" stroke-opacity="0.1"/>
+    <circle r="196" fill="none" stroke="#ffffff" stroke-opacity="0.06"/>
+    <g stroke="#ffffff" stroke-opacity="0.16" fill="url(#lm-blade)">
+      <path d="M0 -180 L156 -90 L0 0 Z"/>
+      <path d="M156 -90 L156 90 L0 0 Z"/>
+      <path d="M156 90 L0 180 L0 0 Z"/>
+      <path d="M0 180 L-156 90 L0 0 Z"/>
+      <path d="M-156 90 L-156 -90 L0 0 Z"/>
+      <path d="M-156 -90 L0 -180 L0 0 Z"/>
+    </g>
+    <circle r="62" fill="url(#lm-sun)"/>
+    <circle r="26" fill="#ffe6a8" fill-opacity="0.85"/>
+    <g stroke="#ffffff" stroke-opacity="0.14">
+      <path d="M0 -240 V-214 M0 240 V214 M-240 0 H-214 M240 0 H214"/>
+    </g>
+  </g>
+
+  <!-- 直方图 -->
+  <g fill="#ffffff" fill-opacity="0.16">
+    <rect x="120" y="600" width="12" height="40" rx="3"/>
+    <rect x="142" y="580" width="12" height="60" rx="3"/>
+    <rect x="164" y="556" width="12" height="84" rx="3"/>
+    <rect x="186" y="532" width="12" height="108" rx="3"/>
+    <rect x="208" y="548" width="12" height="92" rx="3"/>
+    <rect x="230" y="574" width="12" height="66" rx="3"/>
+    <rect x="252" y="596" width="12" height="44" rx="3"/>
+  </g>
+  <g fill="#ffffff" fill-opacity="0.35">
+    <rect x="274" y="588" width="12" height="52" rx="3"/>
+    <rect x="296" y="566" width="12" height="74" rx="3"/>
+    <rect x="318" y="540" width="12" height="100" rx="3"/>
+    <rect x="340" y="522" width="12" height="118" rx="3"/>
+    <rect x="362" y="546" width="12" height="94" rx="3"/>
+    <rect x="384" y="580" width="12" height="60" rx="3"/>
+    <rect x="406" y="604" width="12" height="36" rx="3"/>
+  </g>
+
+  <!-- 滑块 -->
+  <g>
+    <line x1="470" y1="620" x2="1080" y2="620" stroke="#ffffff" stroke-opacity="0.16" stroke-width="4" stroke-linecap="round"/>
+    <line x1="470" y1="620" x2="820" y2="620" stroke="#b892ff" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="820" cy="620" r="12" fill="#e9ddff"/>
+    <line x1="470" y1="660" x2="1080" y2="660" stroke="#ffffff" stroke-opacity="0.1" stroke-width="4" stroke-linecap="round"/>
+    <line x1="470" y1="660" x2="680" y2="660" stroke="#4cc9f0" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="680" cy="660" r="10" fill="#c9f2ff"/>
+  </g>
+
+  <text x="120" y="150" font-family="'Space Grotesk',sans-serif" font-size="17" letter-spacing="7" fill="#7b6a9a">LUMEN / LOCAL-FIRST COLOR GRADING</text>
+</svg>

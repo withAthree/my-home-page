@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750" role="img" aria-label="CloudDeck 云资源看板封面">
+  <defs>
+    <linearGradient id="cd-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#060b1c"/>
+      <stop offset="0.55" stop-color="#081428"/>
+      <stop offset="1" stop-color="#040610"/>
+    </linearGradient>
+    <linearGradient id="cd-area" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4cc9f0" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#4cc9f0" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="cd-line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#4cc9f0" stop-opacity="0.2"/>
+      <stop offset="0.45" stop-color="#4cc9f0"/>
+      <stop offset="1" stop-color="#a8f0ff"/>
+    </linearGradient>
+    <filter id="cd-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="750" fill="url(#cd-bg)"/>
+
+  <!-- 透视网格 -->
+  <g stroke="#4cc9f0" stroke-opacity="0.13" stroke-width="1">
+    <path d="M0 560 H1200 M0 610 H1200 M0 660 H1200 M0 710 H1200"/>
+    <path d="M120 750 L360 470 M320 750 L470 470 M520 750 L580 470 M720 750 L690 470 M920 750 L800 470 M1120 750 L910 470"/>
+  </g>
+
+  <!-- 数据区 -->
+  <path d="M120 470 L240 430 L360 452 L480 372 L600 396 L720 300 L840 322 L960 232 L1080 262 L1080 560 L120 560 Z" fill="url(#cd-area)"/>
+  <path d="M120 470 L240 430 L360 452 L480 372 L600 396 L720 300 L840 322 L960 232 L1080 262" fill="none" stroke="url(#cd-line)" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+  <path d="M120 470 L240 430 L360 452 L480 372 L600 396 L720 300 L840 322 L960 232 L1080 262" fill="none" stroke="#4cc9f0" stroke-width="8" stroke-opacity="0.35" filter="url(#cd-glow)"/>
+
+  <g fill="#a8f0ff">
+    <circle cx="480" cy="372" r="5"/>
+    <circle cx="720" cy="300" r="5"/>
+    <circle cx="960" cy="232" r="6"/>
+  </g>
+  <circle cx="960" cy="232" r="18" fill="none" stroke="#4cc9f0" stroke-opacity="0.5"/>
+
+  <!-- 浮动指标卡 -->
+  <g>
+    <rect x="120" y="110" width="250" height="110" rx="14" fill="#0b1a2e" stroke="#4cc9f0" stroke-opacity="0.28"/>
+    <text x="148" y="152" font-family="'Space Grotesk',sans-serif" font-size="15" letter-spacing="3" fill="#5d7fa3">CPU UTILIZATION</text>
+    <text x="148" y="196" font-family="'Space Grotesk',sans-serif" font-size="38" font-weight="600" fill="#e8f6ff">42.6%</text>
+
+    <rect x="410" y="140" width="230" height="92" rx="14" fill="#0b1a2e" stroke="#4cc9f0" stroke-opacity="0.18"/>
+    <text x="436" y="176" font-family="'Space Grotesk',sans-serif" font-size="13" letter-spacing="3" fill="#5d7fa3">NODES</text>
+    <text x="436" y="212" font-family="'Space Grotesk',sans-serif" font-size="30" font-weight="600" fill="#cfe9ff">128</text>
+  </g>
+
+  <!-- 右侧柱状 -->
+  <g fill="#4cc9f0" fill-opacity="0.5">
+    <rect x="900" y="120" width="10" height="60" rx="5"/>
+    <rect x="922" y="96" width="10" height="84" rx="5"/>
+    <rect x="944" y="140" width="10" height="40" rx="5"/>
+    <rect x="966" y="76" width="10" height="104" rx="5"/>
+    <rect x="988" y="112" width="10" height="68" rx="5"/>
+    <rect x="1010" y="88" width="10" height="92" rx="5"/>
+    <rect x="1032" y="132" width="10" height="48" rx="5"/>
+  </g>
+
+  <text x="120" y="676" font-family="'Space Grotesk',sans-serif" font-size="17" letter-spacing="7" fill="#3f5f80">CLOUDDECK / REALTIME OBSERVABILITY</text>
+</svg>

@@ -1,0 +1,27 @@
+{
+  "name": "my-home-page",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 4000",
+    "build": "next build",
+    "start": "next start -p 4000",
+    "lint": "next lint",
+    "admin": "node scripts/studio.cjs dev",
+    "admin:static": "node scripts/studio.cjs serve",
+    "content:check": "node scripts/studio.cjs check"
+  },
+  "dependencies": {
+    "next": "^15.5.28",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.10.2",
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.6",
+    "@types/three": "0.180.0",
+    "typescript": "5.7.3"
+  }
+}
