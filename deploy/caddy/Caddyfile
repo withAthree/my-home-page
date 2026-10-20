@@ -1,0 +1,35 @@
+# ============================================================================
+#  Caddy 反向代理 —— 自动申请 / 续期 Let's Encrypt 证书
+#  只在 docker-compose.tls.yml 里使用
+# ============================================================================
+
+{
+	# 想收 Let's Encrypt 的证书到期提醒邮件，就把下面这行取消注释并改成你的邮箱。
+	# 注意：必须填真实的邮箱地址 —— 写成空值 Caddy 会直接报
+	# "wrong argument count ... after 'email'" 起不来。
+	# email you@example.com
+}
+
+# ---------------------------------------------------------------------------
+# 主域名：静态站点
+# ---------------------------------------------------------------------------
+{$SITE_DOMAIN} {
+	encode zstd gzip
+
+	# 真实的客户端 IP 传给 nginx（日志里能看见访客 IP）
+	reverse_proxy web:80 {
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	header {
+		# 只走 HTTPS 一年；确认站点永久上 HTTPS 后再开 includeSubDomains
+		Strict-Transport-Security "max-age=31536000"
+		-Server
+	}
+
+	log {
+		output stdout
+		format console
+	}
+}

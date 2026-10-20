@@ -1,0 +1,34 @@
+# 构建上下文尽量小：镜像里需要的东西 Dockerfile 会自己装 / 自己构建
+
+# ---- 依赖与构建产物（镜像内重新生成，绝不要从宿主机带进去）----
+node_modules
+.next
+.next-*
+out
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# ---- 本地工具痕迹 ----
+.studio
+.shots
+.vscode
+.idea
+
+# ---- 版本控制与 CI ----
+.git
+.gitignore
+.gitattributes
+.github
+
+# ---- 部署与文档（运行时用不到）----
+docs
+DEPLOY.md
+README.md
+*.md
+docker-compose*.yml
+.env
+.env.*
+
+# ---- 系统垃圾 ----
+.DS_Store
+Thumbs.db

@@ -1,0 +1,85 @@
+# ============================================================================
+#  my-home-page —— 生产部署编排（站点 + Caddy 自动 HTTPS）
+# ----------------------------------------------------------------------------
+#  和 docker-compose.yml 是「二选一」的两套完整编排，不要叠加使用。
+#
+#  用它的前提（三条都得满足，否则证书签不下来）：
+#    1. 域名的 A/AAAA 记录已经指到这台服务器
+#    2. 安全组 / 防火墙放行 80 和 443（80 是 Let's Encrypt 校验用的）
+#    3. .env 里填好 SITE_DOMAIN
+#
+#  命令：
+#    docker compose -f docker-compose.tls.yml up -d --build
+#    docker compose -f docker-compose.tls.yml logs -f caddy    # 看证书签发过程
+#
+#  证书存在 caddy_data 卷里，重启、重新部署都不会重复申请
+#  （Let's Encrypt 有频率限制，别反复重建这个卷）。
+# ============================================================================
+
+services:
+  web:
+    image: ${IMAGE_NAME:-my-home-page}:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_IMAGE: ${NODE_IMAGE:-node:22-alpine}
+        NGINX_IMAGE: ${NGINX_IMAGE:-nginx:1.29-alpine}
+        NPM_REGISTRY: ${NPM_REGISTRY:-https://registry.npmjs.org}
+        RUN_CONTENT_CHECK: ${RUN_CONTENT_CHECK:-0}
+    container_name: ${CONTAINER_NAME:-my-home-page}
+    restart: unless-stopped
+
+    # 只在内网暴露给 Caddy，不直接对外发布端口
+    expose:
+      - "80"
+
+    environment:
+      TZ: ${TZ:-Asia/Shanghai}
+
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:mode=1777
+      - /var/run:mode=1777
+      - /tmp:mode=1777
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - edge
+
+  caddy:
+    image: ${CADDY_IMAGE:-caddy:2-alpine}
+    container_name: ${CONTAINER_NAME:-my-home-page}-caddy
+    restart: unless-stopped
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      SITE_DOMAIN: ${SITE_DOMAIN:?请先在 .env 里设置 SITE_DOMAIN（例如 SITE_DOMAIN=example.com）}
+      TZ: ${TZ:-Asia/Shanghai}
+    volumes:
+      - ./deploy/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - edge
+
+networks:
+  edge:
+
+volumes:
+  caddy_data:
+  caddy_config:

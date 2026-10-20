@@ -16,3 +16,8 @@ tsconfig.tsbuildinfo
 # 系统文件
 .DS_Store
 Thumbs.db
+
+# 部署时的本地配置（照 .env.example 复制，不要提交）
+.env
+.env.local
+.env.*.local

@@ -1,0 +1,57 @@
+# ============================================================================
+#  my-home-page —— 生产部署编排（纯静态站点，HTTP）
+# ----------------------------------------------------------------------------
+#  常用命令（都在本文件所在目录执行）：
+#    docker compose up -d --build    首次部署 / 内容更新后重新部署
+#    docker compose ps               看状态与健康检查
+#    docker compose logs -f web      看 nginx 日志
+#    docker compose down             停止并删除容器（镜像和 .env 保留）
+#
+#  所有可调项都在同目录的 .env 里（照 .env.example 复制一份即可）。
+#  需要 HTTPS 时用 docker-compose.tls.yml（自动申请证书），不要叠加本文件。
+# ============================================================================
+
+services:
+  web:
+    image: ${IMAGE_NAME:-my-home-page}:${IMAGE_TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NODE_IMAGE: ${NODE_IMAGE:-node:22-alpine}
+        NGINX_IMAGE: ${NGINX_IMAGE:-nginx:1.29-alpine}
+        NPM_REGISTRY: ${NPM_REGISTRY:-https://registry.npmjs.org}
+        RUN_CONTENT_CHECK: ${RUN_CONTENT_CHECK:-0}
+    container_name: ${CONTAINER_NAME:-my-home-page}
+    restart: unless-stopped
+
+    # 宿主机端口:容器端口 —— 前面还有反向代理的话，建议只绑本机：
+    #   ports: ["127.0.0.1:${WEB_PORT:-8080}:80"]
+    ports:
+      - "${WEB_PORT:-8080}:80"
+
+    environment:
+      TZ: ${TZ:-Asia/Shanghai}
+
+    # ---- 加固：只放静态文件，容器内文件系统只读，只留三个临时目录 ----
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:mode=1777
+      - /var/run:mode=1777
+      - /tmp:mode=1777
+    security_opt:
+      - no-new-privileges:true
+
+    # ---- 日志：按大小滚动，别把服务器磁盘写满 ----
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/healthz"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s

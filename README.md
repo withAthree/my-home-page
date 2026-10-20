@@ -63,4 +63,16 @@ npm run content:check
 
 ## 部署
 
-`npm run build` 生成纯静态的 `out/`，可直接丢到 Vercel / 任意静态托管。线上的 `/admin/` 页面是可用的编辑器，但没有写文件的后端，只能用离线草稿模式导出文件——这是有意的安全设计。后台服务只监听 `127.0.0.1`，不要暴露到公网。
+`npm run build` 生成纯静态的 `out/`，可直接丢到 Vercel / 任意静态托管。
+
+用 Docker 部署到自己的云服务器（阿里云 / 腾讯云 / VPS）已经准备好一键方案：
+
+```bash
+cp .env.example .env         # 改 WEB_PORT 等
+docker compose up -d --build # 起 nginx，访问 http://服务器IP:8080
+sh deploy/smoke-test.sh      # 14 项部署后自检
+```
+
+需要 HTTPS 就用 `docker-compose.tls.yml`（内置 Caddy，自动申请续期证书）。完整步骤、安全组放行、更新与回滚、故障排查见 **[DEPLOY.md](DEPLOY.md)**。
+
+线上的 `/admin/` 页面是可用的编辑器，但没有写文件的后端，只能用离线草稿模式导出文件——这是有意的安全设计。后台服务只监听 `127.0.0.1`，不要暴露到公网，也不要打进容器。
