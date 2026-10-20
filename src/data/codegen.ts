@@ -20,6 +20,8 @@ export const FALLBACK_HEADER = `/**
  *  ------------------------------------------------------------
  *  想改文案 / 项目 / 照片 / 联系方式，只改这个文件即可，全站生效。
  *  图片统一放在 public/images/ 下，用 "/images/xxx.jpg" 引用。
+ *  工作年限不用手写：文案里写 "{years}" 即可，渲染时按「当年 − 2021」
+ *  自动算出（2026 年即 5 年）；{since} 是 2021，{year} 是当年。见 data/career.ts。
  *
  *  ⚠️ 这个文件也可以由后台管理系统（/admin）自动生成。
  *     后台启动方式见 docs/ADMIN.md；直接手改本文件同样完全有效。
@@ -52,7 +54,7 @@ export interface Profile {
   keywords: string[];
   email: string;
   socials: SocialLink[];
-  /** 首屏数据条 */
+  /** 首屏数据条；value 可写 {years}，渲染时自动替换成工作年限（当年 − 2021） */
   stats: { label: string; value: string }[];
 }
 
@@ -130,7 +132,7 @@ export interface CopyConfig {
     logoSuffix: string;
   };
   about: SectionCopy & {
-    /** 头像角标，如 "8Y+ EXP" */
+    /** 头像角标，如 "{years}Y+ EXP"；{years} 自动算成工作年限 */
     avatarBadge: string;
     /** 「所在地 ·」文案 */
     locationLabel: string;
@@ -155,7 +157,7 @@ export interface CopyConfig {
     copiedLabel: string;
   };
   footer: {
-    /** 版权行，可用 {year} 与 {name} 占位 */
+    /** 版权行，可用 {year} / {years} / {since} / {name} 占位 */
     copyright: string;
     builtWithLabel: string;
     /** 技术栈标签，逐个渲染为 <code> */

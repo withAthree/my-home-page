@@ -4,6 +4,7 @@ import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 import { Icon } from "./ui/Icon";
 import { Modal } from "./ui/overlay";
 import { getAt, useFieldError, useStudio } from "./store";
+import { fillContentTokens } from "@/data/career";
 import {
   formatTemplate,
   type FieldDef,
@@ -705,8 +706,9 @@ export function ItemList({
 
       <div className="items">
         {items.map((item, index) => {
-          const title = formatTemplate(titleTpl, item) || `第 ${index + 1} 项`;
-          const subtitle = formatTemplate(subtitleTpl, item);
+          // 标题里的 {years} / {year} 这类占位符直接换成真实值，后台看到的和站点一致
+          const title = fillContentTokens(formatTemplate(titleTpl, item)) || `第 ${index + 1} 项`;
+          const subtitle = fillContentTokens(formatTemplate(subtitleTpl, item));
           const thumb = thumbKey ? asString(item?.[thumbKey]) : "";
           const isOpen = open.has(index);
           const deleting = pendingDelete === index;

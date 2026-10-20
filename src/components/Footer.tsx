@@ -1,13 +1,12 @@
 "use client";
 
+import { fillContentTokens } from "@/data/career";
 import { useSiteContent } from "./ContentProvider";
 import { ArrowUp } from "./Icons";
 
-/** 版权行占位符替换：{year} / {name} */
+/** 版权行占位符替换：{year} / {years} / {since} / {name} */
 function renderCopyright(template: string, name: string) {
-  return String(template ?? "")
-    .replace(/\{year\}/g, String(new Date().getFullYear()))
-    .replace(/\{name\}/g, name);
+  return fillContentTokens(template, { name });
 }
 
 export default function Footer() {

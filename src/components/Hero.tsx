@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { fillContentTokens } from "@/data/career";
 import { useSiteContent } from "./ContentProvider";
 import { ArrowRight, Mail } from "./Icons";
 
@@ -72,7 +73,7 @@ export default function Hero() {
       <div className="hero__inner">
         <div className="hero__eyebrow" style={{ opacity: ready ? 1 : 0, transition: "opacity .8s" }}>
           <i className="dot-live" aria-hidden="true" />
-          {copy.hero.badge}
+          {fillContentTokens(copy.hero.badge)}
         </div>
 
         <h1 className="hero__title">
@@ -111,7 +112,7 @@ export default function Hero() {
             {profile.stats.map((s) => (
               <div key={s.label}>
                 <dt className="stat__label">{s.label}</dt>
-                <dd className="stat__value">{s.value}</dd>
+                <dd className="stat__value">{fillContentTokens(s.value)}</dd>
               </div>
             ))}
           </dl>

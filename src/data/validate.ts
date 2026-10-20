@@ -8,6 +8,7 @@
  * ============================================================
  */
 
+import { CAREER_START_YEAR, isHardcodedYears } from "./career";
 import { ADMIN_PAGES, getAtPath, type AdminPage, type FieldDef } from "./schema";
 
 export type IssueLevel = "error" | "warn";
@@ -364,6 +365,29 @@ export function auditConfig(
   const bio = ((config.profile as Record<string, unknown> | undefined)?.bio ?? []) as string[];
   if (bio.length > 4) {
     push("warn", "profile.bio", "简介超过 4 段，「关于我」板块会显得过长", "profile");
+  }
+
+  // 9. 工作年限写死会过时：应该写成 {years}，由代码按「当年 − 2021」自动算
+  const stats = ((config.profile as Record<string, unknown> | undefined)?.stats ??
+    []) as Record<string, unknown>[];
+  stats.forEach((stat, i) => {
+    if (!isHardcodedYears(stat.value)) return;
+    push(
+      "warn",
+      `profile.stats.${i}.value`,
+      `「${String(stat.value)}」看着像写死的年限，明年不会自动更新；改成 {years}Y+ 会按「当年 − ${CAREER_START_YEAR}」自动算`,
+      "profile",
+      i
+    );
+  });
+  const avatarBadge = copy?.about?.avatarBadge;
+  if (isHardcodedYears(avatarBadge)) {
+    push(
+      "warn",
+      "copy.about.avatarBadge",
+      `头像角标「${String(avatarBadge)}」看着像写死的年限，建议改成 {years}Y+ EXP`,
+      "copy"
+    );
   }
 
   return issues;

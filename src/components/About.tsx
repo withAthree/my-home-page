@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { fillContentTokens } from "@/data/career";
 import { useSiteContent } from "./ContentProvider";
 import RichTitle from "./RichTitle";
 import Reveal from "./Reveal";
@@ -57,7 +58,7 @@ export default function About() {
                 </div>
                 <span className="avatar__badge">
                   <i className="dot-live" aria-hidden="true" />
-                  {copy.about.avatarBadge}
+                  {fillContentTokens(copy.about.avatarBadge)}
                 </span>
               </div>
             </Reveal>
@@ -89,7 +90,7 @@ export default function About() {
             <Reveal>
               <div className="bio">
                 {profile.bio.map((p, i) => (
-                  <p key={i}>{p}</p>
+                  <p key={i}>{fillContentTokens(p)}</p>
                 ))}
               </div>
             </Reveal>

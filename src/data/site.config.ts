@@ -4,6 +4,8 @@
  *  ------------------------------------------------------------
  *  想改文案 / 项目 / 照片 / 联系方式，只改这个文件即可，全站生效。
  *  图片统一放在 public/images/ 下，用 "/images/xxx.jpg" 引用。
+ *  工作年限不用手写：文案里写 "{years}" 即可，渲染时按「当年 − 2021」
+ *  自动算出（2026 年即 5 年）；{since} 是 2021，{year} 是当年。见 data/career.ts。
  *
  *  ⚠️ 这个文件也可以由后台管理系统（/admin）自动生成。
  *     后台启动方式见 docs/ADMIN.md；直接手改本文件同样完全有效。
@@ -36,7 +38,7 @@ export interface Profile {
   keywords: string[];
   email: string;
   socials: SocialLink[];
-  /** 首屏数据条 */
+  /** 首屏数据条；value 可写 {years}，渲染时自动替换成工作年限（当年 − 2021） */
   stats: { label: string; value: string }[];
 }
 
@@ -114,7 +116,7 @@ export interface CopyConfig {
     logoSuffix: string;
   };
   about: SectionCopy & {
-    /** 头像角标，如 "8Y+ EXP" */
+    /** 头像角标，如 "{years}Y+ EXP"；{years} 自动算成工作年限 */
     avatarBadge: string;
     /** 「所在地 ·」文案 */
     locationLabel: string;
@@ -139,7 +141,7 @@ export interface CopyConfig {
     copiedLabel: string;
   };
   footer: {
-    /** 版权行，可用 {year} 与 {name} 占位 */
+    /** 版权行，可用 {year} / {years} / {since} / {name} 占位 */
     copyright: string;
     builtWithLabel: string;
     /** 技术栈标签，逐个渲染为 <code> */
@@ -194,7 +196,7 @@ export const siteConfig: SiteConfig = {
     location: "中国 · 西安",
     avatar: "/images/wallhaven-o5llrm.jpg",
     bio: [
-      "黄凯，软件工程师，2021 年起从事应用研发，现居西安。前端以 TypeScript、Vue、React 为主，后端做 Node.js、Python 与 Java，也负责过 Nginx、Docker 的部署与线上维护。",
+      "黄凯，软件工程师，{since} 年起从事应用研发，现居西安。前端以 TypeScript、Vue、React 为主，后端做 Node.js、Python 与 Java，也负责过 Nginx、Docker 的部署与线上维护。",
       "先后参与智慧楼宇与低代码平台的研发，后在航天领域参与卫星测控平台及指挥类系统的设计与开发，从需求拆解、技术选型到上线交付都完整跑过。",
       "目前在关注 LangGraph 与 AI 应用工程化，希望找一个能真正解决复杂问题、对交付质量有要求的团队。",
     ],
@@ -215,7 +217,7 @@ export const siteConfig: SiteConfig = {
     stats: [
       {
         label: "工作经验",
-        value: "5Y+",
+        value: "{years}Y+",
       },
       {
         label: "主导项目",
@@ -460,7 +462,7 @@ export const siteConfig: SiteConfig = {
   ],
   copy: {
     hero: {
-      badge: "Available for select projects · 2026",
+      badge: "Available for select projects · {year}",
       ctaPrimary: "查看作品",
       ctaSecondary: "联系我",
       scrollHint: "Scroll to explore",
@@ -473,7 +475,7 @@ export const siteConfig: SiteConfig = {
       index: "01 — About",
       title: "把复杂*拆开*\n再把细节做到位",
       sub: "一个写前端、也关心后端与设计的人。相信好的产品是「工程约束」与「审美判断」反复拉扯后的结果。",
-      avatarBadge: "8Y+ EXP",
+      avatarBadge: "{years}Y+ EXP",
       locationLabel: "所在地",
     },
     projects: {

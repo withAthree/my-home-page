@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { fillContentTokens } from "@/data/career";
 import siteConfig from "@/data/site.config";
 import "./globals.css";
 
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
   metadataBase: safeBaseUrl(seo.siteUrl),
   title: `${profile.name} · ${roleTitle} | 个人门户`,
   description:
-    seo.description || `${profile.name}的个人门户 —— ${profile.tagline} ${profile.bio[0] ?? ""}`,
+    seo.description ||
+    `${profile.name}的个人门户 —— ${profile.tagline} ${fillContentTokens(profile.bio[0] ?? "")}`,
   keywords: [profile.name, ...profile.roles, ...profile.keywords, ...seo.keywords],
   authors: [{ name: profile.name }],
   alternates: { canonical: "/" },

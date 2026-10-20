@@ -9,6 +9,11 @@
  * ============================================================
  */
 
+import { CONTENT_TOKEN_NAMES } from "./career";
+
+/** 文案里允许出现的占位符：内置的 {year}/{years}/{since} + 页脚的 {name} */
+const COPY_TOKENS = new Set<string>([...CONTENT_TOKEN_NAMES, "name"]);
+
 /* ------------------------------ 字段类型 ------------------------------ */
 
 export type FieldKind =
@@ -257,7 +262,7 @@ export const ADMIN_PAGES: AdminPage[] = [
             minItems: 1,
             maxItems: 5,
             addLabel: "添加段落",
-            hint: "每段对应「关于我」右侧的一段文字",
+            hint: "每段对应「关于我」右侧的一段文字；{since} 会自动替换成参加工作年份",
           },
           chips("keywords", "关键词标签", "展示为头像下方的标签云", "加一个关键词后回车"),
         ],
@@ -328,11 +333,19 @@ export const ADMIN_PAGES: AdminPage[] = [
             maxItems: 4,
             addLabel: "添加数据项",
             itemTitle: "{label} · {value}",
-            newItem: () => ({ label: "研发经验", value: "5Y+" }),
-            hint: "2–3 条排版最好看",
+            newItem: () => ({ label: "研发经验", value: "{years}Y+" }),
+            hint: "2–3 条排版最好看；工作年限写 {years} 即可，不用手动改",
             itemFields: [
               { key: "label", label: "说明", kind: "text", required: true, half: true },
-              { key: "value", label: "数值", kind: "text", required: true, half: true },
+              {
+                key: "value",
+                label: "数值",
+                kind: "text",
+                required: true,
+                half: true,
+                placeholder: "{years}Y+",
+                hint: "可写 {years}（工作年限，按当年 − 2021 自动算）与 {year}（当年）",
+              },
             ],
           },
         ],
@@ -624,7 +637,7 @@ export const ADMIN_PAGES: AdminPage[] = [
             key: "badge",
             label: "状态徽标",
             kind: "text",
-            hint: "首屏左上角那一行小字，可留空",
+            hint: "首屏左上角那一行小字，可留空；{year} 会自动替换成当年",
           },
           { key: "ctaPrimary", label: "主按钮文字", kind: "text", half: true, required: true },
           { key: "ctaSecondary", label: "次按钮文字", kind: "text", half: true, required: true },
@@ -657,7 +670,14 @@ export const ADMIN_PAGES: AdminPage[] = [
         path: "copy.about",
         fields: [
           ...sectionCopyFields(),
-          { key: "avatarBadge", label: "头像角标", kind: "text", half: true, placeholder: `${new Date().getFullYear() - 2021}Y+ EXP` },
+          {
+            key: "avatarBadge",
+            label: "头像角标",
+            kind: "text",
+            half: true,
+            placeholder: "{years}Y+ EXP",
+            hint: "{years} 会自动替换成工作年限（当年 − 2021），不用手写数字",
+          },
           {
             key: "locationLabel",
             label: "所在地标签",
@@ -728,10 +748,12 @@ export const ADMIN_PAGES: AdminPage[] = [
             label: "版权行",
             kind: "text",
             required: true,
-            hint: "支持 {year} 与 {name} 两个占位符",
+            hint: "支持 {year}（当年）、{years}（工作年限）、{since}（参加工作年份）与 {name}",
             validate: (v) => {
               if (typeof v !== "string") return null;
-              const bad = v.match(/\{[a-zA-Z]+\}/g)?.filter((t) => t !== "{year}" && t !== "{name}");
+              const bad = v
+                .match(/\{[a-zA-Z]+\}/g)
+                ?.filter((t) => !COPY_TOKENS.has(t.slice(1, -1)));
               return bad && bad.length ? `不认识的占位符：${bad.join("、")}` : null;
             },
           },
